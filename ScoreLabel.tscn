@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://silkscreen.tres" type="DynamicFont" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Label"
+
+[node name="ScoreLabel" type="Label"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -284.0
+margin_top = 20.0
+margin_right = -30.0
+margin_bottom = 61.0
+custom_fonts/font = ExtResource( 1 )
+text = "Score: 0"
+align = 2
+script = SubResource( 1 )

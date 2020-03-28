@@ -1,0 +1,142 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Game.gd" type="Script" id=1]
+[ext_resource path="res://Enemy.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Bullet.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Textures/blink_icon.png" type="Texture" id=5]
+[ext_resource path="res://Textures/pound_icon.png" type="Texture" id=6]
+[ext_resource path="res://ScoreLabel.tscn" type="PackedScene" id=7]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=8]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://slkscre.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 20
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 20
+font_data = SubResource( 1 )
+
+[node name="Background" type="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -4.0
+color = Color( 0.454902, 0, 1, 1 )
+script = ExtResource( 1 )
+Enemy = ExtResource( 2 )
+Bullet = ExtResource( 3 )
+
+[node name="Background2" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_left = -110.0
+margin_top = -70.0
+margin_right = 1130.0
+margin_bottom = 660.0
+color = Color( 0.454902, 0, 1, 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -110.0
+margin_top = -60.0
+margin_right = 110.0
+margin_bottom = 60.0
+color = Color( 0, 0, 0, 0.235294 )
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="ShootTimer" type="Timer" parent="."]
+wait_time = 0.35
+autostart = true
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 520, 510 )
+z_index = 1
+collision_mask = 2
+
+[node name="Border" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Border"]
+polygon = PoolVector2Array( 0, 0, 0, 570, 1020, 570, 1020, 0, 1040, -400, 1040, 600, -20, 600, -20, -410, 0, 0 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+editor/display_folded = true
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 230.0
+margin_bottom = 133.0
+custom_constants/separation = 20
+
+[node name="BlinkContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 77.0
+margin_bottom = 113.0
+
+[node name="BlinkProgress" type="TextureProgress" parent="HBoxContainer/BlinkContainer"]
+margin_right = 77.0
+margin_bottom = 77.0
+max_value = 6.0
+step = 0.1
+texture_progress = ExtResource( 5 )
+fill_mode = 4
+
+[node name="BlinkTimer" type="Timer" parent="HBoxContainer/BlinkContainer/BlinkProgress"]
+wait_time = 6.0
+one_shot = true
+autostart = true
+
+[node name="BlinkLabel" type="Label" parent="HBoxContainer/BlinkContainer"]
+margin_top = 81.0
+margin_right = 77.0
+margin_bottom = 102.0
+custom_fonts/font = SubResource( 2 )
+text = "Blink"
+align = 1
+
+[node name="PoundContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 97.0
+margin_right = 184.0
+margin_bottom = 113.0
+
+[node name="PoundProgress" type="TextureProgress" parent="HBoxContainer/PoundContainer"]
+margin_right = 87.0
+margin_bottom = 77.0
+max_value = 12.0
+step = 0.1
+texture_progress = ExtResource( 6 )
+fill_mode = 4
+
+[node name="PoundTimer" type="Timer" parent="HBoxContainer/PoundContainer/PoundProgress"]
+wait_time = 12.0
+one_shot = true
+autostart = true
+
+[node name="PoundLabel" type="Label" parent="HBoxContainer/PoundContainer"]
+margin_top = 81.0
+margin_right = 87.0
+margin_bottom = 102.0
+custom_fonts/font = SubResource( 3 )
+text = "pound"
+
+[node name="ScoreLabel" parent="." instance=ExtResource( 7 )]
+margin_left = -345.5
+margin_right = -91.5
+
+[node name="HUD" parent="." instance=ExtResource( 8 )]
+
+[node name="MarginContainer" parent="HUD" index="0"]
+visible = false
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
+[connection signal="body_entered" from="Player" to="." method="_on_Player_body_entered"]
+[connection signal="timeout" from="HBoxContainer/BlinkContainer/BlinkProgress/BlinkTimer" to="." method="_on_BlinkTimer_timeout"]
+[connection signal="timeout" from="HBoxContainer/PoundContainer/PoundProgress/PoundTimer" to="." method="_on_PoundTimer_timeout"]
+
+[editable path="HUD"]

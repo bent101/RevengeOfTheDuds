@@ -1,0 +1,47 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[  ]
+_global_script_class_icons={
+
+}
+
+[application]
+
+config/name="Revenge of the Duds"
+run/main_scene="res://Menu.tscn"
+boot_splash/image="res://SHE_boot_splash.png"
+boot_splash/bg_color=Color( 1, 1, 1, 1 )
+config/icon="res://Textures/Dud-Vincent1.png"
+
+[autoload]
+
+SceneChanger="*res://SceneChanger.tscn"
+Global="*res://Global.tscn"
+
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="enemies"
+2d_physics/layer_3="static"
+2d_physics/layer_4="bullets"
+
+[physics]
+
+2d/default_gravity=300
+
+[rendering]
+
+environment/default_environment="res://default_env.tres"
